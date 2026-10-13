@@ -1,0 +1,12 @@
+{
+  "name": "startgg-game-data-mapper",
+  "version": "0.1.0",
+  "description": "Conservative, standalone Start.gg game data to set mapper",
+  "repository": { "type": "git", "url": "https://github.com/0xburn/game-data-mapper.git" },
+  "type": "module",
+  "bin": { "game-data-mapper": "cli.mjs" },
+  "engines": { "node": ">=22" },
+  "scripts": { "test": "node --test test/*.test.mjs" },
+  "files": ["cli.mjs", "src", "README.md"],
+  "dependencies": { "@slippi/slippi-js": "9.1.2" }
+}
