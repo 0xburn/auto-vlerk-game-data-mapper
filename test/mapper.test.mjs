@@ -114,7 +114,7 @@ test('API retries throttling and rejects partial GraphQL results', async () => {
   await assert.rejects(partial('query', {}), /incomplete/);
 });
 test('writer preserves input, reserves new output, verifies bytes, and numbers game files', t => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'game-mapper-test-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-vlerk-game-data-mapper-test-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const games = local().map((g, i) => {
     const buffer = Buffer.from(`fixture ${i}`); const file = path.join(root, `${i}.slp`);
@@ -132,7 +132,7 @@ test('writer preserves input, reserves new output, verifies bytes, and numbers g
   assert.deepEqual(fs.readdirSync(changed), ['report.json']);
 });
 test('preview writes only report; existing context folders are skipped', t => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'game-mapper-test-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-vlerk-game-data-mapper-test-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const out = path.join(root, 'preview');
   writeOutput(out, event, matchGames([local()], [official()]), {});

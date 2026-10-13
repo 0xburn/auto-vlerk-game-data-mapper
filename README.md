@@ -1,4 +1,4 @@
-# Game Data Mapper
+# Auto Vlerk Game Data Mapper
 
 A standalone command-line tool that maps Melee `.slp` game data to completed
 Start.gg sets and creates a `context.json` for each accepted set. Runs locally
@@ -27,8 +27,8 @@ console clock. The character, stage, and winner sequence establishes the match.
 Requires Node.js 22 or newer.
 
 ```sh
-git clone https://github.com/0xburn/game-data-mapper.git
-cd game-data-mapper
+git clone https://github.com/0xburn/auto-vlerk-game-data-mapper.git
+cd auto-vlerk-game-data-mapper
 npm ci
 node cli.mjs --help
 ```
@@ -108,11 +108,11 @@ npm test
 npm pack
 ```
 
-Share the resulting `startgg-game-data-mapper-0.1.0.tgz`. Recipients can install it:
+Share the resulting `auto-vlerk-game-data-mapper-0.1.0.tgz`. Recipients can install it:
 
 ```sh
-npm install -g ./startgg-game-data-mapper-0.1.0.tgz
-game-data-mapper --help
+npm install -g ./auto-vlerk-game-data-mapper-0.1.0.tgz
+auto-vlerk-game-data-mapper --help
 ```
 
 The npm package includes only this tool's source and instructions. Users supply

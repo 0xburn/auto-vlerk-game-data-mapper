@@ -12,7 +12,7 @@ try {
     write: { type: 'boolean', default: false }, help: { type: 'boolean', short: 'h' },
   } });
   if (values.help) {
-    console.log(`Game Data Mapper
+    console.log(`Auto Vlerk Game Data Mapper
 
 Usage: node cli.mjs --event <Start.gg event URL or ID> --dir <game-data-folder> --out <new-folder> [--write]
 

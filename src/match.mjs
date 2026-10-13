@@ -119,7 +119,7 @@ export function buildContext(event, match) {
     }]])),
     startgg: { tournament: { id: event.tournament.id, name: event.tournament.name },
       event: { id: event.id, name: event.name }, set: { id: set.id, fullRoundText: set.round } },
-    mapping: { generatedBy: 'startgg-game-data-mapper', version: 1, evidence: 'unique-complete-game-sequence',
+    mapping: { generatedBy: 'auto-vlerk-game-data-mapper', version: 1, evidence: 'unique-complete-game-sequence',
       files: games.map((g, i) => ({ name: `${String(i + 1).padStart(2, '0')}.slp`, sha256: g.sha256 })) },
   };
 }
