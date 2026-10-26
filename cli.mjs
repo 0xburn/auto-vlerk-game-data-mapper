@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { createClient, loadEvent } from './src/startgg.mjs';
+import { createClient as createParryClient, loadEvent as loadParryEvent, UUID } from './src/parry.mjs';
 import { scanDirectory, writeOutput } from './src/files.mjs';
 import { matchGames } from './src/match.mjs';
 
@@ -14,12 +15,12 @@ try {
   if (values.help) {
     console.log(`Auto Vlerk Game Data Mapper
 
-Usage: node cli.mjs --event <Start.gg event URL or ID> --dir <game-data-folder> --out <new-folder> [--write]
+Usage: node cli.mjs --event <Start.gg or Parry.gg event URL or ID> --dir <game-data-folder> --out <new-folder> [--write]
 
-Set STARTGG_TOKEN to your Start.gg API token.
-Requires complete per-game Start.gg character, stage, and winner records.
+Start.gg requires STARTGG_TOKEN. Parry.gg uses public reads; PARRY_API_KEY is optional.
+Requires complete per-game character, stage, and winner records.
 Game files need reliable timestamps and one recording setup per folder.
-Timing establishes game order; Start.gg clock offsets are not estimated.
+Timing establishes game order; tournament clock offsets are not estimated.
 Default: write a mapping report. Add --write to copy matched games with context.json.
 Use a separate new output folder for each run. Requires Node.js 22 or newer.`);
   } else {
@@ -33,8 +34,10 @@ Use a separate new output folder for each run. Requires Node.js 22 or newer.`);
       throw new Error('Choose an output folder outside the input folder.');
     }
     if (fs.existsSync(out)) throw new Error('Output folder already exists. Choose a new folder.');
-    console.log('Reading Start.gg event data…');
-    const event = await loadEvent(values.event, createClient(process.env.STARTGG_TOKEN), (loaded, total) => {
+    const parry = UUID.test(values.event) || /^https?:\/\/(www\.)?parry\.gg(?:\/|$)/i.test(values.event);
+    console.log(`Reading ${parry ? 'Parry.gg' : 'Start.gg'} event data…`);
+    const event = await (parry ? loadParryEvent : loadEvent)(values.event,
+      parry ? createParryClient(process.env.PARRY_API_KEY) : createClient(process.env.STARTGG_TOKEN), (loaded, total) => {
       if (loaded % 100 === 0 || loaded === total) console.log(`Read ${loaded} of ${total} sets.`);
     });
     if (event.sets.some(s => s.slots?.some(slot => slot.entrant?.participants?.length > 1))) {
@@ -46,7 +49,7 @@ Use a separate new output folder for each run. Requires Node.js 22 or newer.`);
     const used = new Set(results.accepted.flatMap(m => m.games.map(g => g.file)));
     const report = {
       version: 1, generatedAt: new Date().toISOString(), mode: values.write ? 'write' : 'preview',
-      event: { id: event.id, name: event.name, tournament: event.tournament },
+      event: { provider: event.provider ?? 'startgg', id: event.id, name: event.name, tournament: event.tournament },
       summary: { matchedSets: results.accepted.length, completeSets: results.completeSets,
         eligibleSets: results.totalSets, ambiguousWindows: results.ambiguousWindows,
         conflictingCandidates: results.conflictingCandidates },

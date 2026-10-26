@@ -1,7 +1,7 @@
 {
   "name": "auto-vlerk-game-data-mapper",
-  "version": "0.1.0",
-  "description": "Conservative, standalone Start.gg game data to set mapper",
+  "version": "0.2.0",
+  "description": "Conservative, standalone Start.gg and Parry.gg game data to set mapper",
   "repository": { "type": "git", "url": "https://github.com/0xburn/auto-vlerk-game-data-mapper.git" },
   "type": "module",
   "bin": { "auto-vlerk-game-data-mapper": "cli.mjs" },

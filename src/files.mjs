@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { SlippiGame } from '@slippi/slippi-js/node';
+import { UUID } from './parry.mjs';
 import { characterKey, buildContext } from './match.mjs';
 
 const CHARACTERS = ['Captain Falcon', 'Donkey Kong', 'Fox', 'Mr. Game & Watch', 'Kirby', 'Bowser',
@@ -85,7 +86,9 @@ export function writeOutput(out, event, results, report, { write = false } = {})
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2), { flag: 'wx' });
   if (!write) return;
   for (const match of results.accepted) {
-    if (!/^\d+$/.test(match.set.id)) throw new Error('Invalid Start.gg set ID.');
+    if (!(event.provider === 'parry' ? UUID.test(match.set.id) : /^\d+$/.test(match.set.id))) {
+      throw new Error('Invalid set ID.');
+    }
     const temp = fs.mkdtempSync(path.join(out, '.pending-'));
     try {
       for (const [index, game] of match.games.entries()) {

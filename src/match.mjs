@@ -118,7 +118,8 @@ export function buildContext(event, match) {
       characters: [...new Set(games.map(g => g.players.find(p => p.port === ports[flip ? 1 - i : i]).characterName))],
     }]])),
     startgg: { tournament: { id: event.tournament.id, name: event.tournament.name },
-      event: { id: event.id, name: event.name }, set: { id: set.id, fullRoundText: set.round } },
+      event: { id: event.id, name: event.name }, set: { id: event.provider === 'parry' ? null : set.id,
+        ...(event.provider === 'parry' ? { internalId: set.id } : {}), fullRoundText: set.round } },
     mapping: { generatedBy: 'auto-vlerk-game-data-mapper', version: 1, evidence: 'unique-complete-game-sequence',
       files: games.map((g, i) => ({ name: `${String(i + 1).padStart(2, '0')}.slp`, sha256: g.sha256 })) },
   };
